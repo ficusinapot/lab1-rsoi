@@ -37,11 +37,10 @@ func (h *Handler) RegisterRoutes(api huma.API) {
 		Tags:          []string{PersonsTag.Name},
 	}, h.Create)
 	huma.Register(api, huma.Operation{ //nolint:exhaustruct_v5
-		OperationID:   "update-persons",
-		Method:        http.MethodPatch,
-		Path:          idPath,
-		DefaultStatus: http.StatusNoContent,
-		Tags:          []string{PersonsTag.Name},
+		OperationID: "update-persons",
+		Method:      http.MethodPatch,
+		Path:        idPath,
+		Tags:        []string{PersonsTag.Name},
 	}, h.Update)
 	huma.Register(api, huma.Operation{ //nolint:exhaustruct_v5
 		OperationID:   "delete-persons",

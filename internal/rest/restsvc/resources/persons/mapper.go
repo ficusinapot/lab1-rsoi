@@ -5,11 +5,37 @@ import "github.com/ficusinapot/ds/internal/models/entities"
 func requestToModel(request Request) *entities.Person {
 	return &entities.Person{
 		ID:      0,
-		Name:    request.Name,
-		Age:     request.Age,
-		Address: request.Address,
-		Work:    request.Work,
+		Name:    valueOrZero(request.Name),
+		Age:     valueOrZero(request.Age),
+		Address: valueOrZero(request.Address),
+		Work:    valueOrZero(request.Work),
 	}
+}
+
+func mergeRequest(person *entities.Person, request Request) *entities.Person {
+	if request.Name != nil {
+		person.Name = *request.Name
+	}
+	if request.Age != nil {
+		person.Age = *request.Age
+	}
+	if request.Address != nil {
+		person.Address = *request.Address
+	}
+	if request.Work != nil {
+		person.Work = *request.Work
+	}
+
+	return person
+}
+
+func valueOrZero[T any](value *T) T {
+	if value == nil {
+		var zero T
+		return zero
+	}
+
+	return *value
 }
 
 func modelToResponse(person *entities.Person) Response {

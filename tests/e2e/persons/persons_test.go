@@ -46,20 +46,16 @@ func TestPersonsAPI(t *testing.T) {
 	list := infrastructure.DoJSON[[]person](t, client, http.MethodGet, service.BaseURL+"/api/v1/persons", nil, http.StatusOK)
 	require.Contains(t, list, created)
 
-	infrastructure.DoNoBody(t, client, http.MethodPatch, fmt.Sprintf("%s/api/v1/persons/%d", service.BaseURL, created.ID), personRequest{
-		Name:    "Petr",
-		Age:     0,
-		Address: "Kazan",
-		Work:    "Manager",
-	}, http.StatusNoContent)
-
-	updated := infrastructure.DoJSON[person](t, client, http.MethodGet, fmt.Sprintf("%s/api/v1/persons/%d", service.BaseURL, created.ID), nil, http.StatusOK)
+	updated := infrastructure.DoJSON[person](t, client, http.MethodPatch, fmt.Sprintf("%s/api/v1/persons/%d", service.BaseURL, created.ID), map[string]string{
+		"name":    "Petr",
+		"address": "Kazan",
+	}, http.StatusOK)
 	require.Equal(t, person{
 		ID:      created.ID,
 		Name:    "Petr",
-		Age:     0,
+		Age:     21,
 		Address: "Kazan",
-		Work:    "Manager",
+		Work:    "Engineer",
 	}, updated)
 
 	infrastructure.DoNoBody(t, client, http.MethodDelete, fmt.Sprintf("%s/api/v1/persons/%d", service.BaseURL, created.ID), nil, http.StatusNoContent)

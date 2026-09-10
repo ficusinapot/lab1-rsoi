@@ -7,7 +7,7 @@ services:
     dockerfilePath: ./Dockerfile
     dockerContext: .
     healthCheckPath: /api/v1/healthz
-    autoDeployTrigger: checksPass
+    autoDeployTrigger: off
     envVars:
       - key: DATABASE_URL
         fromDatabase:

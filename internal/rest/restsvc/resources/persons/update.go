@@ -8,10 +8,18 @@ import (
 	"github.com/joomcode/errorx"
 )
 
-func (h *Handler) Update(ctx context.Context, input *WithIDInput) (*struct{}, error) {
-	person := requestToModel(input.Body)
-	person.ID = input.ID
+func (h *Handler) Update(ctx context.Context, input *WithIDInput) (*Output, error) {
+	person, err := h.personUseCase.GetPerson(ctx, input.ID)
+	if errorx.IsOfType(err, persons.ErrPersonNotFound) {
+		h.logger.DebugContext(ctx, "person not found", "error", err, "id", input.ID)
+		return nil, huma.Error404NotFound("persons not found")
+	}
+	if err != nil {
+		h.logger.ErrorContext(ctx, "get person before update failed", "error", err, "id", input.ID)
+		return nil, huma.Error500InternalServerError("get persons failed")
+	}
 
+	person = mergeRequest(person, input.Body)
 	if err := h.personUseCase.UpdatePerson(ctx, person); err != nil {
 		if errorx.IsOfType(err, persons.ErrPersonNotFound) {
 			h.logger.DebugContext(ctx, "person not found", "error", err, "id", input.ID)
@@ -22,5 +30,5 @@ func (h *Handler) Update(ctx context.Context, input *WithIDInput) (*struct{}, er
 		return nil, huma.Error500InternalServerError("update persons failed")
 	}
 
-	return &struct{}{}, nil
+	return &Output{Body: modelToResponse(person)}, nil
 }

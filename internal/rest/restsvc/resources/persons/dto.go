@@ -22,10 +22,10 @@ type Output struct {
 }
 
 type Request struct {
-	Name    string `json:"name"`
-	Age     int    `json:"age"`
-	Address string `json:"address"`
-	Work    string `json:"work"`
+	Name    *string `json:"name,omitempty"`
+	Age     *int    `json:"age,omitempty"`
+	Address *string `json:"address,omitempty"`
+	Work    *string `json:"work,omitempty"`
 }
 
 type Response struct {
