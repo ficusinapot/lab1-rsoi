@@ -3,12 +3,14 @@ package persons
 import (
 	"net/http"
 
+	"github.com/ficusinapot/ds/internal/rest/restsvc/resources"
+
 	"github.com/danielgtaylor/huma/v2"
 )
 
 const (
 	path   = "/persons"
-	idPath = "/persons/{id}"
+	idPath = path + "/{id}"
 )
 
 var PersonsTag = huma.Tag{
@@ -49,4 +51,8 @@ func (h *Handler) RegisterRoutes(api huma.API) {
 		DefaultStatus: http.StatusNoContent,
 		Tags:          []string{PersonsTag.Name},
 	}, h.Delete)
+}
+
+func resourceLocation(id int) string {
+	return resources.ResourceLocation(path, id)
 }

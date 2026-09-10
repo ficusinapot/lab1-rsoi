@@ -14,7 +14,7 @@ services:
           name: rsoi-person-db
           property: connectionString
       - key: RSOI_CONFIG_PATH
-        value: /app/configs/config.yaml
+        value: /etc/secrets/config.yaml
 
 databases:
   - name: rsoi-person-db

@@ -19,7 +19,10 @@ import (
 
 func main() {
 	if err := commands.Execute(runApp); err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
+		_, err := fmt.Fprintf(os.Stderr, "%v\n", err)
+		if err != nil {
+			return
+		}
 		os.Exit(1)
 	}
 }

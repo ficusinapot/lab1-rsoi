@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/ficusinapot/ds/internal/rest/restsvc/middleware"
+	"github.com/ficusinapot/ds/internal/rest/restsvc/resources"
 	"github.com/ficusinapot/ds/internal/rest/restsvc/resources/persons"
 	"github.com/ficusinapot/ds/internal/rest/restsvc/resources/status"
 	"github.com/ficusinapot/ds/internal/rest/restsvc/resources/version"
@@ -26,7 +27,7 @@ type AppInfo struct {
 }
 
 const (
-	apiPrefix = "/api/v1"
+	apiPrefix = resources.APIPrefix
 )
 
 func init() {

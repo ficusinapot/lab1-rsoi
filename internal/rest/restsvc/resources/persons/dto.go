@@ -21,6 +21,11 @@ type Output struct {
 	Body Response
 }
 
+type CreateOutput struct {
+	Location string `header:"Location"`
+	Body     Response
+}
+
 type Request struct {
 	Name    *string `json:"name,omitempty"`
 	Age     *int    `json:"age,omitempty"`
