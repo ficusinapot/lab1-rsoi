@@ -8,7 +8,7 @@ import (
 )
 
 func InitMetrics(reg prometheus.Registerer) {
-	personsRegisterer := prometheus.WrapRegistererWithPrefix("domain_persons_", reg)
+	personsRegisterer := prometheus.WrapRegistererWithPrefix("domain_", reg)
 	personmetrics.InitMetrics(personsRegisterer)
 	status.InitMetrics(reg)
 }

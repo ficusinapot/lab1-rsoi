@@ -2,18 +2,18 @@ package domain
 
 import (
 	"github.com/ficusinapot/ds/internal/domain/persons"
-	statususecases "github.com/ficusinapot/ds/internal/domain/status/usecases"
+	"github.com/ficusinapot/ds/internal/domain/status"
 )
 
 type components struct {
 	personUseCase *persons.PersonUseCase
-	statusUseCase *statususecases.StatusUseCase
+	statusUseCase *status.StatusUseCase
 }
 
 func newComponents(imports Imports) components {
 	return components{
 		personUseCase: persons.NewPersonUseCase(imports.PersonRepository),
-		statusUseCase: statususecases.NewStatusUseCase(imports.DBStatusProvider),
+		statusUseCase: status.NewStatusUseCase(imports.DBStatusProvider),
 	}
 }
 

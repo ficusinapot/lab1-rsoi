@@ -6,6 +6,8 @@ import (
 	"github.com/ficusinapot/ds/internal/models/entities"
 )
 
+//go:generate go tool mockgen -source=persons_repo.go -destination=mocks/person_repository.go -package=mocks
+
 type PersonRepository interface {
 	GetByID(ctx context.Context, id int) (*entities.Person, error)
 	List(ctx context.Context) ([]entities.Person, error)
