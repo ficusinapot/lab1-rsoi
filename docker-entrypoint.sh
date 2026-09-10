@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+
+if [ -n "${DATABASE_URL:-}" ]; then
+  atlas migrate apply --dir "file:///app/migrations" --url "$DATABASE_URL"
+fi
+
+exec /app/service "$@"

@@ -1,0 +1,16 @@
+version: "2"
+linters:
+  exclusions:
+    paths:
+      - ".go"
+formatters:
+  enable:
+    - gofumpt
+  settings:
+    gofumpt:
+      module-path: github.com/ficusinapot/ds
+      extra-rules: false
+  exclusions:
+    generated: lax
+run:
+  timeout: 5m

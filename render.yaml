@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: rsoi-person-service
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/v1/healthz
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: rsoi-person-db
+          property: connectionString
+      - key: RSOI_CONFIG_PATH
+        value: /app/configs/config.yaml
+
+databases:
+  - name: rsoi-person-db
+    plan: free
+    region: frankfurt
+    databaseName: persons
+    user: program
+    postgresMajorVersion: "18"
