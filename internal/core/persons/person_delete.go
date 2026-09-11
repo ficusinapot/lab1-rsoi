@@ -3,8 +3,8 @@ package persons
 import (
 	"context"
 
-	"github.com/ficusinapot/ds/internal/domain/persons/metrics"
-	"github.com/ficusinapot/ds/internal/models/coreifc/persons"
+	"github.com/ficusinapot/ds/internal/core/persons/metrics"
+	"github.com/ficusinapot/ds/internal/models/core/persons"
 
 	"github.com/joomcode/errorx"
 )

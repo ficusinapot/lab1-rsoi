@@ -5,8 +5,8 @@ import (
 	"log/slog"
 
 	"github.com/ficusinapot/ds/internal/config"
+	"github.com/ficusinapot/ds/internal/core"
 	"github.com/ficusinapot/ds/internal/db"
-	"github.com/ficusinapot/ds/internal/domain"
 	"github.com/ficusinapot/ds/internal/observability/logging"
 	"github.com/ficusinapot/ds/internal/observability/metrics"
 	"github.com/ficusinapot/ds/internal/observability/tracing"
@@ -62,7 +62,7 @@ func New(ctx context.Context, cfg config.Config, appInfo restsvc.AppInfo) (*App,
 	metricsRegistry := metrics.NewRegistry(appInfo.Name, appInfo.Version)
 	db.InitMetrics(metricsRegistry.Registerer())
 	rest.InitMetrics(metricsRegistry.Registerer())
-	domain.InitMetrics(metricsRegistry.Registerer())
+	core.InitMetrics(metricsRegistry.Registerer())
 	manager := NewManager(cfg, logger, metricsRegistry, appInfo)
 
 	return &App{

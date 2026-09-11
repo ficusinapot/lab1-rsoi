@@ -3,7 +3,7 @@ package persons
 import (
 	"log/slog"
 
-	"github.com/ficusinapot/ds/internal/models/coreifc/persons"
+	"github.com/ficusinapot/ds/internal/models/core/persons"
 )
 
 type Handler struct {

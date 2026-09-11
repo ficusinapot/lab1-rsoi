@@ -1,7 +1,7 @@
 package status
 
 import (
-	statusmetrics "github.com/ficusinapot/ds/internal/domain/status/metrics"
+	statusmetrics "github.com/ficusinapot/ds/internal/core/status/metrics"
 
 	"github.com/prometheus/client_golang/prometheus"
 )

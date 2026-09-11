@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/danielgtaylor/huma/v2"
-	"github.com/ficusinapot/ds/internal/models/coreifc/persons"
+	"github.com/ficusinapot/ds/internal/models/core/persons"
 	"github.com/joomcode/errorx"
 )
 

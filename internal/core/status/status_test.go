@@ -1,11 +1,10 @@
 package status_test
 
 import (
-	"context"
 	"testing"
 
-	"github.com/ficusinapot/ds/internal/domain/status"
-	statuscontracts "github.com/ficusinapot/ds/internal/models/coreifc/status"
+	"github.com/ficusinapot/ds/internal/core/status"
+	statuscontracts "github.com/ficusinapot/ds/internal/models/core/status"
 	dbifcmocks "github.com/ficusinapot/ds/internal/models/dbifc/mocks"
 	"github.com/ficusinapot/ds/internal/models/entities"
 
@@ -17,7 +16,7 @@ import (
 func TestStatusUseCaseGetStatusWhenDatabaseIsAvailable(t *testing.T) {
 	t.Parallel()
 
-	ctx := context.Background()
+	ctx := t.Context()
 	provider := dbifcmocks.NewMockStatusProvider(gomock.NewController(t))
 	provider.EXPECT().IsConnectionAvailable(gomock.Any()).Return(true)
 
@@ -33,7 +32,7 @@ func TestStatusUseCaseGetStatusWhenDatabaseIsAvailable(t *testing.T) {
 func TestStatusUseCaseGetStatusWhenDatabaseIsUnavailable(t *testing.T) {
 	t.Parallel()
 
-	ctx := context.Background()
+	ctx := t.Context()
 	provider := dbifcmocks.NewMockStatusProvider(gomock.NewController(t))
 	provider.EXPECT().IsConnectionAvailable(gomock.Any()).Return(false)
 
@@ -49,7 +48,7 @@ func TestStatusUseCaseGetStatusWhenDatabaseIsUnavailable(t *testing.T) {
 func TestStatusUseCaseHealthz(t *testing.T) {
 	t.Parallel()
 
-	ctx := context.Background()
+	ctx := t.Context()
 	provider := dbifcmocks.NewMockStatusProvider(gomock.NewController(t))
 	provider.EXPECT().IsConnectionAvailable(gomock.Any()).Return(true)
 
@@ -61,7 +60,7 @@ func TestStatusUseCaseHealthz(t *testing.T) {
 func TestStatusUseCaseHealthzReturnsConnectionError(t *testing.T) {
 	t.Parallel()
 
-	ctx := context.Background()
+	ctx := t.Context()
 	provider := dbifcmocks.NewMockStatusProvider(gomock.NewController(t))
 	provider.EXPECT().IsConnectionAvailable(gomock.Any()).Return(false)
 
@@ -73,7 +72,7 @@ func TestStatusUseCaseHealthzReturnsConnectionError(t *testing.T) {
 func TestStatusUseCaseReadyz(t *testing.T) {
 	t.Parallel()
 
-	ctx := context.Background()
+	ctx := t.Context()
 	provider := dbifcmocks.NewMockStatusProvider(gomock.NewController(t))
 	provider.EXPECT().IsConnectionAvailable(gomock.Any()).Return(true)
 
@@ -85,7 +84,7 @@ func TestStatusUseCaseReadyz(t *testing.T) {
 func TestStatusUseCaseReadyzReturnsConnectionError(t *testing.T) {
 	t.Parallel()
 
-	ctx := context.Background()
+	ctx := t.Context()
 	provider := dbifcmocks.NewMockStatusProvider(gomock.NewController(t))
 	provider.EXPECT().IsConnectionAvailable(gomock.Any()).Return(false)
 

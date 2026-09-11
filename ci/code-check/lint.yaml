@@ -59,6 +59,7 @@ linters:
             - gopkg.in/natefinch/lumberjack.v2
             - go.opentelemetry.io/otel
             - go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp
+            - go.uber.org/mock/gomock
 
 run:
   timeout: 5m

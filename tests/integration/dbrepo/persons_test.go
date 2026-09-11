@@ -3,11 +3,10 @@
 package dbrepo_test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/ficusinapot/ds/internal/db/repos"
-	personcontracts "github.com/ficusinapot/ds/internal/models/coreifc/persons"
+	personcontracts "github.com/ficusinapot/ds/internal/models/core/persons"
 	"github.com/ficusinapot/ds/internal/models/entities"
 	"github.com/ficusinapot/ds/tests/infrastructure"
 
@@ -16,7 +15,7 @@ import (
 )
 
 func TestPersonRepositoryCRUD(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	pg := infrastructure.NewPostgres(t)
 	repo := repos.NewPersonRepository(pg.DB)
 
@@ -61,7 +60,7 @@ func TestPersonRepositoryCRUD(t *testing.T) {
 }
 
 func TestPersonRepositoryReturnsNotFound(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	pg := infrastructure.NewPostgres(t)
 	repo := repos.NewPersonRepository(pg.DB)
 
