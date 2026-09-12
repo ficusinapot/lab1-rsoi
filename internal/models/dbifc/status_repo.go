@@ -2,6 +2,8 @@ package dbifc
 
 import "context"
 
+//go:generate go tool mockgen -source=status_repo.go -destination=mocks/status_provider.go -package=mocks
+
 type ConnectionStatus string
 
 const (

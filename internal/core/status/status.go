@@ -1,11 +1,11 @@
-package usecases
+package status
 
 import (
 	"context"
 	"log/slog"
 
-	"github.com/ficusinapot/ds/internal/domain/status/metrics"
-	statuscontracts "github.com/ficusinapot/ds/internal/models/coreifc/status"
+	"github.com/ficusinapot/ds/internal/core/status/metrics"
+	statuscontracts "github.com/ficusinapot/ds/internal/models/core/status"
 	"github.com/ficusinapot/ds/internal/models/dbifc"
 	"github.com/ficusinapot/ds/internal/models/entities"
 
@@ -23,7 +23,7 @@ func NewStatusUseCase(dbStatusProvider dbifc.StatusProvider) *StatusUseCase {
 	return &StatusUseCase{
 		dbStatusProvider: dbStatusProvider,
 		logger:           slog.Default().With("subsystem", "status", "use_case", "status"),
-		tracer:           otel.Tracer("github.com/ficusinapot/ds/internal/domain/status/usecases"),
+		tracer:           otel.Tracer("github.com/ficusinapot/ds/internal/core/status/usecases"),
 	}
 }
 

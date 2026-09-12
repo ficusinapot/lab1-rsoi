@@ -4,7 +4,7 @@ import (
 	"context"
 
 	dbent "github.com/ficusinapot/ds/internal/db/ent"
-	"github.com/ficusinapot/ds/internal/models/coreifc/persons"
+	"github.com/ficusinapot/ds/internal/models/core/persons"
 	"github.com/ficusinapot/ds/internal/models/entities"
 
 	"github.com/joomcode/errorx"

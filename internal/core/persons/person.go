@@ -17,7 +17,7 @@ type PersonUseCase struct {
 func NewPersonUseCase(personRepository dbifc.PersonRepository) *PersonUseCase {
 	return &PersonUseCase{
 		personRepository: personRepository,
-		logger:           slog.Default().With("subsystem", "coreifc", "use_case", "person"),
-		tracer:           otel.Tracer("github.com/ficusinapot/ds/internal/coreifc/persons"),
+		logger:           slog.Default().With("subsystem", "core", "use_case", "person"),
+		tracer:           otel.Tracer("github.com/ficusinapot/ds/internal/core/persons"),
 	}
 }

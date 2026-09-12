@@ -3,7 +3,7 @@ package status
 import (
 	"log/slog"
 
-	statuscontracts "github.com/ficusinapot/ds/internal/models/coreifc/status"
+	statuscontracts "github.com/ficusinapot/ds/internal/models/core/status"
 )
 
 type Handler struct {

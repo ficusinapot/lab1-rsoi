@@ -22,7 +22,7 @@ import (
 )
 
 const (
-	postgresImage    = "postgres:16-alpine"
+	postgresImage    = "postgres:18-alpine"
 	postgresDatabase = "persons"
 	postgresUser     = "postgres"
 	postgresPassword = "postgres"
@@ -36,7 +36,7 @@ type Postgres struct {
 func NewPostgres(t *testing.T) Postgres {
 	t.Helper()
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	ctx, cancel := context.WithTimeout(t.Context(), time.Minute)
 	t.Cleanup(cancel)
 
 	container, err := tcpostgres.Run(

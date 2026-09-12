@@ -31,7 +31,7 @@ func NewService(t *testing.T) Service {
 	httpAddr := freeTCPAddress(t)
 	metricsAddr := freeTCPAddress(t)
 
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithCancel(t.Context())
 	errCh := make(chan error, 1)
 
 	go func() {

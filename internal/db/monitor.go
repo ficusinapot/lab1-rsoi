@@ -11,9 +11,7 @@ import (
 )
 
 type monitor struct {
-	checker interface {
-		Check(context.Context) bool
-	}
+	checker         statusChecker
 	checkPeriodStop chan struct{}
 	done            chan struct{}
 	startOnce       sync.Once
@@ -21,10 +19,11 @@ type monitor struct {
 	started         bool
 }
 
-func newMonitor(checker interface {
+type statusChecker interface {
 	Check(context.Context) bool
-},
-) *monitor {
+}
+
+func newMonitor(checker statusChecker) *monitor {
 	return &monitor{
 		checker:         checker,
 		checkPeriodStop: nil,

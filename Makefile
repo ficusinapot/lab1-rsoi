@@ -3,6 +3,7 @@
 LINT_CONFIG   ?= ci/code-check/lint.yaml
 FMT_CONFIG    ?= ci/code-check/fmt.yaml
 GOLANGCI_LINT ?= $(if $(wildcard $(HOME)/go/bin/golangci-lint),$(HOME)/go/bin/golangci-lint,golangci-lint)
+GOTESTSUM     ?= gotestsum
 GO_VERSION    ?= $(shell go env GOVERSION)
 GOVULNCHECK   ?= GOTOOLCHAIN=$(GO_VERSION) go run golang.org/x/vuln/cmd/govulncheck@latest
 ATLAS         ?= atlas
@@ -32,13 +33,13 @@ build:
 	go build -o bin -v -ldflags "$(LDFLAGS)" ./...
 
 unit-test:
-	go test -race -timeout 30s ./internal/... ./cmd/...
+	$(GOTESTSUM) -- -race -timeout 30s ./internal/... ./cmd/...
 
 integration-test:
-	go test -count=1 -race -tags=integration -timeout 2m ./tests/integration/...
+	$(GOTESTSUM) -- -count=1 -race -tags=integration -timeout 2m ./tests/integration/...
 
 e2e-test:
-	go test -count=1 -race -tags=e2e -timeout 2m ./tests/e2e/...
+	$(GOTESTSUM) -- -count=1 -race -tags=e2e -timeout 2m ./tests/e2e/...
 
 test-all: unit-test integration-test e2e-test
 

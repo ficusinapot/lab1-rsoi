@@ -4,8 +4,8 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/ficusinapot/ds/internal/deps"
-	managercore "github.com/ficusinapot/ds/internal/manager"
+	"github.com/ficusinapot/ds/internal/models/core/persons"
+	"github.com/ficusinapot/ds/internal/models/core/status"
 	"github.com/ficusinapot/ds/internal/observability/metrics"
 	"github.com/ficusinapot/ds/internal/rest/restsvc"
 
@@ -13,17 +13,11 @@ import (
 )
 
 type Manager struct {
-	managercore.GenericManager
-	base *managerBase
-}
-
-type managerBase struct {
 	appInfo         restsvc.AppInfo
 	config          Config
 	logger          *slog.Logger
 	metricsRegistry *metrics.Registry
 	service         *restsvc.Service
-	imports         Imports
 }
 
 func NewManager(
@@ -32,42 +26,30 @@ func NewManager(
 	logger *slog.Logger,
 	metricsRegistry *metrics.Registry,
 ) *Manager {
-	base := &managerBase{
+	return &Manager{
 		appInfo:         appInfo,
 		config:          restConfig,
 		logger:          logger.With("subsystem", "rest", "manager", "api"),
 		metricsRegistry: metricsRegistry,
 		service:         nil,
-		imports:         Imports{},
-	}
-
-	return &Manager{
-		GenericManager: managercore.NewGenericManager(base),
-		base:           base,
 	}
 }
 
-func (m *managerBase) Name() string {
+func (m *Manager) Name() string {
 	return "REST API"
 }
 
-func (m *managerBase) PrepareInner(ctx context.Context, imports deps.Container) (deps.Container, error) {
+func (m *Manager) Prepare(ctx context.Context, personUseCase persons.PersonUseCase, statusUseCase status.StatusUseCase) error {
 	_ = ctx
 
-	personUseCase, err := deps.Resolve(imports, deps.PersonUseCaseKey)
-	if err != nil {
-		return deps.Container{}, errorx.IllegalState.Wrap(err, "resolve person use case")
+	if personUseCase == nil {
+		return errorx.IllegalState.New("person use case is required")
 	}
-	statusUseCase, err := deps.Resolve(imports, deps.StatusUseCaseKey)
-	if err != nil {
-		return deps.Container{}, errorx.IllegalState.Wrap(err, "resolve status use case")
+	if statusUseCase == nil {
+		return errorx.IllegalState.New("status use case is required")
 	}
 
-	m.imports = Imports{
-		PersonUseCase: personUseCase,
-		StatusUseCase: statusUseCase,
-	}
-	handlers := newHandlers(m.imports)
+	handlers := newHandlers(personUseCase, statusUseCase)
 	m.service = restsvc.NewService(
 		m.appInfo,
 		m.config.Service,
@@ -78,10 +60,10 @@ func (m *managerBase) PrepareInner(ctx context.Context, imports deps.Container) 
 		m.metricsRegistry,
 	)
 
-	return deps.New(), nil
+	return nil
 }
 
-func (m *managerBase) RunInner(ctx context.Context) error {
+func (m *Manager) Run(ctx context.Context) error {
 	if m.service == nil {
 		return errorx.IllegalState.New("REST API service is not prepared")
 	}
@@ -93,7 +75,7 @@ func (m *managerBase) RunInner(ctx context.Context) error {
 	return nil
 }
 
-func (m *managerBase) StopCommunicationsInner(ctx context.Context) error {
+func (m *Manager) StopCommunications(ctx context.Context) error {
 	if m.service == nil {
 		return nil
 	}
@@ -105,24 +87,24 @@ func (m *managerBase) StopCommunicationsInner(ctx context.Context) error {
 	return nil
 }
 
-func (m *managerBase) ShutdownInner(ctx context.Context) error {
+func (m *Manager) Shutdown(ctx context.Context) error {
 	_ = ctx
 
 	return nil
 }
 
-func (m *managerBase) DisposeInner() {
+func (m *Manager) Dispose() {
 	if m.service != nil {
 		m.service.Dispose()
 	}
 }
 
 func (m *Manager) ServiceTerminationNotification() <-chan struct{} {
-	if m.base.service == nil {
+	if m.service == nil {
 		ch := make(chan struct{})
 		close(ch)
 		return ch
 	}
 
-	return m.base.service.TerminationNotification()
+	return m.service.TerminationNotification()
 }
