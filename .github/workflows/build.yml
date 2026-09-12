@@ -120,6 +120,9 @@ jobs:
           go-version-file: go.mod
           cache: true
 
+      - name: Install gotestsum
+        run: GOTOOLCHAIN=local go install gotest.tools/gotestsum@latest
+
       - name: Unit tests
         run: make unit-test
 
@@ -137,6 +140,9 @@ jobs:
         with:
           go-version-file: go.mod
           cache: true
+
+      - name: Install gotestsum
+        run: GOTOOLCHAIN=local go install gotest.tools/gotestsum@latest
 
       - name: Integration tests
         run: |
@@ -158,6 +164,9 @@ jobs:
           go-version-file: go.mod
           cache: true
 
+      - name: Install gotestsum
+        run: GOTOOLCHAIN=local go install gotest.tools/gotestsum@latest
+
       - name: E2E tests
         run: |
           curl -sSf https://atlasgo.sh | sh
@@ -172,30 +181,40 @@ jobs:
       - e2e-test
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     environment: production
+    permissions:
+      contents: read
+      deployments: write
 
     steps:
       - name: Trigger Render deploy
-        env:
-          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-        run: |
-          test -n "$RENDER_DEPLOY_HOOK_URL"
-          curl -fsS -X POST "$RENDER_DEPLOY_HOOK_URL"
+        uses: JorgeLNJunior/render-deploy@v1.5.0
+        with:
+          service_id: ${{ secrets.RENDER_SERVICE_ID }}
+          api_key: ${{ secrets.RENDER_API_KEY }}
+          wait_deploy: true
+          github_deployment: true
+          deployment_environment: production
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
   e2e-newman-test:
     runs-on: ubuntu-latest
+    needs:
+      - deploy
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Newman
-        run: npm install -g newman
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
 
       - name: Run API tests
         run: |
-          newman run \
+          npx --yes newman run \
             "postman/[inst] Lab1.postman_collection.json" \
-            -e "postman/[inst][render] Lab1.postman_environment.json" \
+            --environment "postman/[inst][render] Lab1.postman_environment.json" \
             --delay-request 100 \
             --reporters cli
