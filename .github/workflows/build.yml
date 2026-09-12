@@ -197,6 +197,6 @@ jobs:
         run: |
           newman run \
             "postman/[inst] Lab1.postman_collection.json" \
-            -e "postman/[inst][render] Lab1.postman_environment.json" \
+            -e "postman/[inst][local] Lab1.postman_environment.json" \
             --delay-request 100 \
             --reporters cli
