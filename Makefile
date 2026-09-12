@@ -3,7 +3,7 @@
 LINT_CONFIG   ?= ci/code-check/lint.yaml
 FMT_CONFIG    ?= ci/code-check/fmt.yaml
 GOLANGCI_LINT ?= $(if $(wildcard $(HOME)/go/bin/golangci-lint),$(HOME)/go/bin/golangci-lint,golangci-lint)
-GOTESTSUM     ?= gotestsum
+GOTESTSUM     ?= $(if $(wildcard $(HOME)/go/bin/gotestsum),$(HOME)/go/bin/gotestsum,gotestsum)
 GO_VERSION    ?= $(shell go env GOVERSION)
 GOVULNCHECK   ?= GOTOOLCHAIN=$(GO_VERSION) go run golang.org/x/vuln/cmd/govulncheck@latest
 ATLAS         ?= atlas
